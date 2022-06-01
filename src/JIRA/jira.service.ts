@@ -7,7 +7,7 @@ export class JiraService {
     method: 'GET',
     headers: {
       Authorization: `Basic ${Buffer.from(
-        'avinash.20399@gmail.com:pwaoY0IfBHrqZ1K5aeAUEB6D',
+        'avinash.20399@gmail.com:UITNGL6gfHuriv9Qu56JBC48',
       ).toString('base64')}`,
       Accept: 'application/json',
     },
@@ -21,7 +21,6 @@ export class JiraService {
       `${this.url}/project`,
       this.requestHeader,
     );
-
     let index = 0;
     for (const element of projectDetail.data) {
       // extract all info about it's epic

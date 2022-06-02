@@ -7,7 +7,7 @@ export class JiraService {
     method: 'GET',
     headers: {
       Authorization: `Basic ${Buffer.from(
-        'avinash.20399@gmail.com:qzUeDDnDSFxq67wml4s324F6',
+        'avinash.20399@gmail.com:8R8ZwGRc2sv0cL4zAmCi66C2',
       ).toString('base64')}`,
       Accept: 'application/json',
     },
@@ -135,19 +135,15 @@ export class JiraService {
       subtaskData: [],
     };
     // extract all info about it's user story
-    try {
-      for (const elem of subtasks.data.issues) {
-        const data = {
-          key: elem.key,
-          name: elem.fields.summary,
-          status: elem.fields.status.name,
-          assignedTo: elem.fields.assignee.displayName,
-          createdBy: elem.fields.creator.displayName,
-        };
-        subtaskD.subtaskData.push(data);
-      }
-    } catch (error) {
-      console.log(error);
+    for (const elem of subtasks.data.issues) {
+      const data = {
+        key: elem.key,
+        name: elem.fields.summary,
+        status: elem.fields.status.name,
+        assignedTo: elem.fields.assignee.displayName,
+        createdBy: elem.fields.creator.displayName,
+      };
+      subtaskD.subtaskData.push(data);
     }
 
     const res = {

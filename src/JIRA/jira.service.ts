@@ -7,7 +7,7 @@ export class JiraService {
     method: 'GET',
     headers: {
       Authorization: `Basic ${Buffer.from(
-        'avinash.20399@gmail.com:2tv3WVL1orpH6bsNARwO7EF0',
+        'avinash.20399@gmail.com:xms8QpM8POWgmvyMi3rq295D',
       ).toString('base64')}`,
       Accept: 'application/json',
     },
@@ -55,6 +55,107 @@ export class JiraService {
       index++;
     }
 
+    return res;
+  }
+
+  async getDashboardScreen(key: string) {
+    // extract all info about it's epic
+    const epics = await axios(
+      `${this.url}/search?jql=issuetype=Epic AND project=${key}`,
+      this.requestHeader,
+    );
+    // create epic part for res
+    const epicsD = {
+      count: epics.data.total,
+      epicsData: [],
+    };
+    // extract all info about it's user story
+    for (const elem of epics.data.issues) {
+      const data = {
+        key: elem.key,
+        name: elem.fields.summary,
+        status: elem.fields.status.name,
+        assignedTo: elem.fields.assignee.displayName,
+        createdBy: elem.fields.creator.displayName,
+      };
+      epicsD.epicsData.push(data);
+    }
+
+    const story = await axios(
+      `${this.url}/search?jql=issuetype=Story AND project=${key}`,
+      this.requestHeader,
+    );
+    // create story for res
+    const storyD = {
+      count: story.data.total,
+      storyData: [],
+    };
+    // extract all info about it's user story
+    for (const elem of story.data.issues) {
+      const data = {
+        key: elem.key,
+        name: elem.fields.summary,
+        status: elem.fields.status.name,
+        assignedTo: elem.fields.assignee.displayName,
+        createdBy: elem.fields.creator.displayName,
+      };
+      storyD.storyData.push(data);
+    }
+
+    // extract all info about it's bugs story
+    const bugs = await axios(
+      `${this.url}/search?jql=issuetype=Bug AND project=${key}`,
+      this.requestHeader,
+    );
+    // create story for res
+    const bugsD = {
+      count: bugs.data.total,
+      bugsData: [],
+    };
+    // extract all info about it's user story
+    for (const elem of bugs.data.issues) {
+      const data = {
+        key: elem.key,
+        name: elem.fields.summary,
+        status: elem.fields.status.name,
+        assignedTo: elem.fields.assignee.displayName,
+        createdBy: elem.fields.creator.displayName,
+      };
+      bugsD.bugsData.push(data);
+    }
+
+    // extract all info about it's Subtask story
+    const subtasks = await axios(
+      `${this.url}/search?jql=issuetype=Subtask AND project=${key}`,
+      this.requestHeader,
+    );
+    // create story for res
+    const subtaskD = {
+      count: subtasks.data.total,
+      subtaskData: [],
+    };
+    // extract all info about it's user story
+    try {
+      for (const elem of subtasks.data.issues) {
+        const data = {
+          key: elem.key,
+          name: elem.fields.summary,
+          status: elem.fields.status.name,
+          assignedTo: elem.fields.assignee.displayName,
+          createdBy: elem.fields.creator.displayName,
+        };
+        subtaskD.subtaskData.push(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    const res = {
+      epics: epicsD,
+      stories: storyD,
+      subtasks: subtaskD,
+      bugs: bugsD,
+    };
     return res;
   }
 }

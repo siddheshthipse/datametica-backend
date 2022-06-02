@@ -7,7 +7,7 @@ export class JiraService {
     method: 'GET',
     headers: {
       Authorization: `Basic ${Buffer.from(
-        'avinash.20399@gmail.com:xms8QpM8POWgmvyMi3rq295D',
+        'avinash.20399@gmail.com:qzUeDDnDSFxq67wml4s324F6',
       ).toString('base64')}`,
       Accept: 'application/json',
     },
